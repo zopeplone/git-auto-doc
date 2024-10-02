@@ -33,6 +33,7 @@ function commit(){
   ig.add([...exclude,docDir])
   //获取提交记录
   let commits = []
+  console.log(lastCommit,'lastCommit')
   if(!lastCommit){
     //没有上次生成文档后的的git hash，将所有git提交记录都生成文档
     commits = execSync(`git log --pretty=format:"%H"`).toString().trim().split('\n');
@@ -41,7 +42,12 @@ function commit(){
     //有上次生成文档后的的git hash，将上次提交之后的提交记录生成文档
     commits = execSync(`git log ${lastCommit}..HEAD --pretty=format:"%H"`).toString().trim().split('\n');
   }
+  commits = commits.reverse()
+  console.log(commits,'commits')
   commits.forEach((hash)=>{
+    if(!hash){
+      return;
+    }
     const lines = execSync(`git show ${hash} --name-status --format=`).toString().trim().split('\n');
     const files = lines.map(line => {
       // 根据 --name-status 格式，第一列为状态（A, D, M），第二列为文件名
@@ -58,20 +64,20 @@ function commit(){
       //生成文档
       const filePath = file.split('/').slice(0,-1).join('/')
       const fileName = file.split('/').pop()
-      fs.mkdir(`./${docDir}/${filePath}`,{ recursive: true },(err)=>{
+      fs.mkdirSync(`./${docDir}/${filePath}`,{ recursive: true },(err)=>{
         if(err){
           console.error(`生成文件夹失败`)
         }
       })
-      fs.appendFile(`./${docDir}/${filePath}/${fileName}.md`, `- ${message} \n`,(err)=>{
+      fs.appendFileSync(`./${docDir}/${filePath}/${fileName}.md`, `- ${message} \n\n`,(err)=>{
         if(err){
-          console.error(`生成文档 ${fileName} 失败`)
+          console.error(`生成文档 ${fileName}.md 失败`,err)
         }
       })
     })
     config.lastCommit = hash;
   })
-  fs.writeFile('./auto-doc.config.json',JSON.stringify(config,null,2) , (err) => {
+  fs.writeFileSync('./auto-doc.config.json',JSON.stringify(config,null,2) , (err) => {
     if(err){
       console.error('更新配置文件失败')
     }else{
