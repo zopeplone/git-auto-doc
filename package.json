@@ -1,14 +1,21 @@
 {
-  "name": "git-auto-doc",
+  "name": "git-auto-doc-parent",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "git",
+    "doc",
+    "git-auto-doc"
+  ],
+  "author": "zopeplone",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "ignore": "^6.0.2",
+    "minimatch": "^10.0.1"
   }
 }

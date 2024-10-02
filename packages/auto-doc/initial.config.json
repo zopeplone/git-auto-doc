@@ -1,0 +1,5 @@
+{
+  "exclude": ["node_modules", "dist", "coverage", "public", "build", "docs", "test", "tests", "example", "examples"],
+  "docDir": "docs",
+  "lastCommit": ""
+}
