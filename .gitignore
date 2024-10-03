@@ -30,3 +30,4 @@ coverage
 
 *.tsbuildinfo
 vite.config.js.timestamp-*.mjs
+**/.vitepress/cache

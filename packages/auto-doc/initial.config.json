@@ -1,5 +1,5 @@
 {
-  "exclude": ["node_modules", "dist", "coverage", "public", "build", "docs", "test", "tests", "example", "examples"],
+  "exclude": ["node_modules", "dist", "coverage", "public", "build", "docs", "test", "tests", "example", "examples","auto-doc.config.json"],
   "docDir": "docs",
   "lastCommit": ""
 }

@@ -42,6 +42,7 @@ function commit(){
     //有上次生成文档后的的git hash，将上次提交之后的提交记录生成文档
     commits = execSync(`git log ${lastCommit}..HEAD --pretty=format:"%H"`).toString().trim().split('\n');
   }
+  //将提交记录倒序，从最旧的提交开始生成文档
   commits = commits.reverse()
   console.log(commits,'commits')
   commits.forEach((hash)=>{
@@ -54,11 +55,15 @@ function commit(){
       const [status, file] = line.split(/\s+/);
       return { status, file };
     });
+    //根据isOnlyDoc判断是否该git提交只更新了文档或者exclude的部分
+    let isOnlyDoc = true;
     // 根据file中的文件路径和exclude进行判定，判断是否需要生成文档
     files.forEach(({status,file})=>{
       if(ig.ignores(file)){
         return;
       }
+      //如果有文件不在exclude中，则该提交不是只更新文档
+      isOnlyDoc = false;
       //获取提交的message
       const message = execSync(`git show -s --format=%s ${hash}`).toString().trim();
       //生成文档
@@ -75,15 +80,19 @@ function commit(){
         }
       })
     })
-    config.lastCommit = hash;
-  })
-  fs.writeFileSync('./auto-doc.config.json',JSON.stringify(config,null,2) , (err) => {
-    if(err){
-      console.error('更新配置文件失败')
-    }else{
-      console.log('更新配置文件成功')
+    if(!isOnlyDoc){
+      config.lastCommit = hash;
+      //更新配置文件，将lastCommit更新为当前提交的hash
+      fs.writeFileSync('./auto-doc.config.json',JSON.stringify(config,null,2) , (err) => {
+        if(err){
+          console.error('更新配置文件失败')
+        }else{
+          console.log('更新配置文件成功')
+        }
+      })
     }
   })
+  
 }
 const arg = process.argv[2];
 if(arg === 'commit'){
