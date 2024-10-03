@@ -12,7 +12,7 @@ hero:
       link: /info/start
     - theme: alt
       text: GitHub
-      link: https://github.com/zopeplone
+      link: https://github.com/zopeplone/git-auto-doc
 
 features:
   - icon: 🐶
