@@ -1,7 +1,7 @@
 {
   "name": "git-auto-doc",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "A tool for automatically configuring development documents based on Git commit logs",
   "main": "index.js",
   "bin": {
     "git-auto-doc": "./bin/index.js"
@@ -9,7 +9,11 @@
   "scripts": {
     "start": "node index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": ["git", "documentation", "auto-doc"],
+  "author": "zopeplone",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "ignore": "^6.0.2"
+  }
 }
